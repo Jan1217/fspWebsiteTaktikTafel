@@ -1,0 +1,367 @@
+<!doctype html>
+<html class="no-js" lang="">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title></title>
+    <link rel="stylesheet" href="css/style.css">
+    <meta name="description" content="">
+    <meta property="og:title" content="">
+    <meta property="og:type" content="">
+    <meta property="og:url" content="">
+    <meta property="og:image" content="">
+    <meta property="og:image:alt" content="">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#fafafa">
+  </head>
+  <header class="main-header">
+    <!-- Linke Seite: Logo -->
+    <div class="main-header__logo">
+      <img src="https://primary.jwwb.nl/public/p/s/h/temp-bolaxpwvnfuxqrvhisdc/fwfs-high.png?enable-io=true&amp;enable=upscale&amp;width=276" alt="Feuerstadt Logo">
+    </div>
+    <!-- Rechte Seite: Titel/Text -->
+    <div class="main-header__title">
+      Feuerstadt Einsatztaktik Tafel
+    </div>
+  </header>
+  <body>
+    <div class="container">
+      <!-- Linke Eingaben -->
+      <div class="sidebar left">
+        <h3>Notizen:</h3>
+        <textarea rows="10"></textarea>
+        <h3>Fahrzeuge</h3>
+        <div class="department">
+          <button class="toggle">Symbole ▼</button>
+          <div class="vehicles hidden">
+            <div class="vehicle einsatz" draggable="true">Feuer 🔥</div>
+            <div class="vehicle einsatz" draggable="true">VU 🚗</div>
+            <div class="vehicle einsatz" draggable="true">Gefahrstoff 🧪</div>
+            <div class="vehicle platz" draggable="true">Bereitstellungsraum</div>
+            <div class="vehicle platz" draggable="true">Patientenablageplatz</div>
+          </div>
+        </div>
+        <div class="department">
+          <button class="toggle">Feuerwache 1 ▼</button>
+          <div class="vehicles hidden">
+            <div class="vehicle kdow" draggable="true">1/10 - KdoW</div>
+            <div class="vehicle elw1" draggable="true">1/11 - ELW1</div>
+            <div class="vehicle lfhlf" draggable="true">1/40 - StLF</div>
+            <div class="vehicle dlk" draggable="true">1/33 - DLK</div>
+            <div class="vehicle lfhlf" draggable="true">1/46 - HLF20</div>
+            <div class="vehicle wlf" draggable="true">1/65 - WLF</div>
+            <div class="vehicle mzf" draggable="true">1/19 - MZF</div>
+          </div>
+        </div>
+        <div class="department">
+          <button class="toggle">Abteilung 2 ▼</button>
+          <div class="vehicles hidden">
+            <div class="vehicle elw1" draggable="true">2/11 - ELW1</div>
+            <div class="vehicle lfhlf" draggable="true">2/42 - LF10</div>
+            <div class="vehicle dlk" draggable="true">2/33 - DLK</div>
+            <div class="vehicle lfhlf" draggable="true">2/46 - HLF20</div>
+            <div class="vehicle rw2" draggable="true">2/52 - RW2</div>
+          </div>
+        </div>
+        <div class="department">
+          <button class="toggle">Abteilung 3 ▼</button>
+          <div class="vehicles hidden">
+            <div class="vehicle lfhlf" draggable="true">3/43 - HLF10</div>
+            <div class="vehicle elw2" draggable="true">3/12 - ELW2</div>
+          </div>
+        </div>
+        <div class="department">
+          <button class="toggle">Abteilung 4 ▼</button>
+          <div class="vehicles hidden">
+            <div class="vehicle lfhlf" draggable="true">4/44 - LF16/12</div>
+            <div class="vehicle gwl2" draggable="true">4/74 - GW-L2</div>
+          </div>
+        </div>
+        <div class="department">
+          <button class="toggle">Rettungswache 1 ▼</button>
+          <div class="vehicles hidden">
+            <div class="vehicle nef" draggable="true">1/82-1 - NEF</div>
+            <div class="vehicle rtw" draggable="true">1/83-1 - RTW</div>
+            <div class="vehicle rtw" draggable="true">1/83-2 - RTW</div>
+            <div class="vehicle nktw" draggable="true">1/85-1 - N-KTW</div>
+          </div>
+        </div>
+        <div class="department">
+          <button class="toggle">Rettungswache 2 ▼</button>
+          <div class="vehicles hidden">
+            <div class="vehicle rtw" draggable="true">2/83-1 - RTW</div>
+          </div>
+        </div>
+        <button onclick="clearFields()" style="padding:10px 20px; background:#c00; color:white; border:none; border-radius:8px; cursor:pointer;">
+          Inhalte Textfelder Löschen
+        </button>
+      </div>
+      <!-- Malfläche -->
+      <div class="canvas-container" id="dropZone">
+        <canvas id="drawingCanvas"></canvas>
+
+        <div class="toolbar">
+          <button id="clearCanvas">Karten Inhalt Löschen</button>
+        </div>
+        <div class="layer-menu">
+          <label>
+            <input type="checkbox" id="layer-background" checked>
+            Karte
+          </label>
+          <label>
+            <input type="checkbox" id="layer-hydrants">
+            Hydranten
+          </label>
+        </div>
+      </div>
+      <!-- Rechte Eingaben -->
+      <div class="sidebar right">
+        <h3>Abschnitte</h3>
+        <div class="section yellow">
+          <strong>EL:</strong><br>
+          TMO: <input type="text"> DMO: <input type="text"><br>
+          <small>Funkgruppe EL - EAL</small><br>
+          Notiz: <textarea></textarea>
+        </div>
+        <div class="section green">
+          <strong>EA 1 Auftrag:</strong><br>
+          EAL 1: <input type="text"><br>
+          TMO: <input type="text"> DMO: <input type="text"><br>
+          Notiz: <textarea></textarea>
+        </div>
+        <div class="section blue">
+          <strong>EA 2 Auftrag:</strong><br>
+          EAL 2: <input type="text"><br>
+          TMO: <input type="text"> DMO: <input type="text"><br>
+          Notiz: <textarea></textarea>
+        </div>
+      </div>
+    </div>
+    <div>
+      <!-- Einsatzdokumentation -->
+      <div class="main-header" style="margin-top: 100px">
+        <div class="main-header__logo">
+          <img src="https://primary.jwwb.nl/public/p/s/h/temp-bolaxpwvnfuxqrvhisdc/fwfs-high.png?enable-io=true&enable=upscale&width=276" alt="Feuerstadt Logo">
+        </div>
+        <div class="main-header__title">Feuerstadt Einsatzdokumentation</div>
+      </div>
+
+      <div class="einsatzdaten">
+        <table>
+          <tr><th>Datum</th><td><input type="text"></td></tr>
+          <tr><th>Einsatznummer</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstichwort</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Protokollführer</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzleiter</th><td><input type="text"></td></tr>
+        </table>
+      </div>
+
+      <div class="einsatzlagemeldungen">
+        <table>
+          <tr>
+            <th class="main-header-tabellen" colspan="3">Lagemeldungen</th>
+          </tr>
+          <tr>
+            <th>Uhrzeit</th>
+            <th>Lagemeldung (EL / ZF)</th>
+            <th>Bemerkung</th>
+          </tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+          <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
+        </table>
+      </div>
+
+      <!-- Fahrzeugübersicht -->
+      <div class="main-header" style="margin-top: 100px">
+        <div class="main-header__logo">
+          <img src="https://primary.jwwb.nl/public/p/s/h/temp-bolaxpwvnfuxqrvhisdc/fwfs-high.png?enable-io=true&enable=upscale&width=276" alt="Feuerstadt Logo">
+        </div>
+        <div class="main-header__title">Fahrzeugübersicht</div>
+      </div>
+
+      <div class="einsatzfahrzeuge">
+        <table>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">Feuerwache 1</th>
+          </tr>
+          <tr><th>Fahrzeug</th><th>Einsatzauftrag</th></tr>
+          <tr><td>Florian Feuerstadt 1/10 - KdoW</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 1/11 - ELW1</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 1/40 - St/LF 20/25</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 1/33 - DLK</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 1/46 - HLF20</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 1/65 - WLF</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 1/19 - MZF</td><td><input type="text"></td></tr>
+        </table>
+
+        <table>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">Abteilung 2</th>
+          </tr>
+          <tr><th>Fahrzeug</th><th>Einsatzauftrag</th></tr>
+          <tr><td>Florian Feuerstadt 2/11 - ELW1</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 2/42 - LF10</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 2/33 - DLK</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 2/46 - HLF20</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 2/52 - RW2</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 2/73 - GW-L1</td><td><input type="text"></td></tr>
+        </table>
+
+        <table>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">Abteilung 3</th>
+          </tr>
+          <tr><th>Fahrzeug</th><th>Einsatzauftrag</th></tr>
+          <tr><td>Florian Feuerstadt 3/43 - HLF10</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 3/12 - ELW2</td><td><input type="text"></td></tr>
+        </table>
+
+        <table>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">Abteilung 4</th>
+          </tr>
+          <tr><th>Fahrzeug</th><th>Einsatzauftrag</th></tr>
+          <tr><td>Florian Feuerstadt 4/44 - LF16/12</td><td><input type="text"></td></tr>
+          <tr><td>Florian Feuerstadt 4/74 - GW-L2</td><td><input type="text"></td></tr>
+        </table>
+
+        <table>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">Rettungsdienst</th>
+          </tr>
+          <tr><th>Fahrzeug</th><th>Einsatzauftrag</th></tr>
+          <tr><td>Rettung Feuerstadt 1/82-1 - NEF</td><td><input type="text"></td></tr>
+          <tr><td>Rettung Feuerstadt 1/83-1 - RTW</td><td><input type="text"></td></tr>
+          <tr><td>Rettung Feuerstadt 1/83-2 - RTW</td><td><input type="text"></td></tr>
+          <tr><td>Rettung Feuerstadt 1/85-1 - N-KTW</td><td><input type="text"></td></tr>
+          <tr><td>Rettung Feuerstadt 2/83-1 - RTW</td><td><input type="text"></td></tr>
+        </table>
+      </div>
+
+      <!-- MELDEN-Schema -->
+      <div class="main-header" style="margin-top: 100px">
+        <div class="main-header__logo">
+          <img src="https://primary.jwwb.nl/public/p/s/h/temp-bolaxpwvnfuxqrvhisdc/fwfs-high.png?enable-io=true&enable=upscale&width=276" alt="Feuerstadt Logo">
+        </div>
+        <div class="main-header__title">Lagemeldungen gemäß MELDEN-Schema</div>
+      </div>
+
+      <div class="einsatzlagemeldungen">
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">1. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">2. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">3. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">4. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">5. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">6. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">7. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+        <table>
+          <tr><th>Uhrzeit</th><td><input type="text"></td></tr>
+          <tr>
+            <th class="main-header-tabellen" colspan="2">8. Lagemeldung</th>
+          </tr>
+          <tr><th>Meldendes Fahrzeug</th><td><input type="text"></td></tr>
+          <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
+          <tr><th>Lage</th><td><textarea></textarea></td></tr>
+          <tr><th>Durchgeführte Maßnahmen</th><td><textarea></textarea></td></tr>
+          <tr><th>Eingesetzte Kräfte</th><td><textarea></textarea></td></tr>
+          <tr><th>Nachforderung</th><td><textarea></textarea></td></tr>
+        </table>
+      </div>
+    </div>
+    <script src="js/script.js"></script>
+  </body>
+</html>

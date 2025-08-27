@@ -1,0 +1,604 @@
+/*! HTML5 Boilerplate v9.0.1 | MIT License | https://html5boilerplate.com/ */
+
+/* main.css 3.0.0 | MIT License | https://github.com/h5bp/main.css#readme */
+/*
+ * What follows is the result of much research on cross-browser styling.
+ * Credit left inline and big thanks to Nicolas Gallagher, Jonathan Neal,
+ * Kroc Camen, and the H5BP dev community and team.
+ */
+
+/* ==========================================================================
+   Base styles: opinionated defaults
+   ========================================================================== */
+
+html {
+  color: #222;
+  font-size: 1em;
+  line-height: 1.4;
+}
+
+/*
+ * Remove text-shadow in selection highlight:
+ * https://twitter.com/miketaylr/status/12228805301
+ *
+ * Customize the background color to match your design.
+ */
+
+::-moz-selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+::selection {
+  background: #b3d4fc;
+  text-shadow: none;
+}
+
+/*
+ * A better looking default horizontal rule
+ */
+
+hr {
+  display: block;
+  height: 1px;
+  border: 0;
+  border-top: 1px solid #ccc;
+  margin: 1em 0;
+  padding: 0;
+}
+
+/*
+ * Remove the gap between audio, canvas, iframes,
+ * images, videos and the bottom of their containers:
+ * https://github.com/h5bp/html5-boilerplate/issues/440
+ */
+
+audio,
+canvas,
+iframe,
+img,
+svg,
+video {
+  vertical-align: middle;
+}
+
+/*
+ * Remove default fieldset styles.
+ */
+
+fieldset {
+  border: 0;
+  margin: 0;
+  padding: 0;
+}
+
+/*
+ * Allow only vertical resizing of textareas.
+ */
+
+textarea {
+  resize: vertical;
+}
+
+/* ==========================================================================
+   Author's custom styles
+   ========================================================================== */
+
+/* ==========================================================================
+   Helper classes
+   ========================================================================== */
+
+/*
+ * Hide visually and from screen readers
+ */
+
+.hidden,
+[hidden] {
+  display: none !important;
+}
+
+/*
+ * Hide only visually, but have it available for screen readers:
+ * https://snook.ca/archives/html_and_css/hiding-content-for-accessibility
+ *
+ * 1. For long content, line feeds are not interpreted as spaces and small width
+ *    causes content to wrap 1 word per line:
+ *    https://medium.com/@jessebeach/beware-smushed-off-screen-accessible-text-5952a4c2cbfe
+ */
+
+.visually-hidden {
+  border: 0;
+  clip: rect(0, 0, 0, 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  white-space: nowrap;
+  width: 1px;
+  /* 1 */
+}
+
+/*
+ * Extends the .visually-hidden class to allow the element
+ * to be focusable when navigated to via the keyboard:
+ * https://www.drupal.org/node/897638
+ */
+
+.visually-hidden.focusable:active,
+.visually-hidden.focusable:focus {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  white-space: inherit;
+  width: auto;
+}
+
+/*
+ * Hide visually and from screen readers, but maintain layout
+ */
+
+.invisible {
+  visibility: hidden;
+}
+
+/*
+ * Clearfix: contain floats
+ *
+ * The use of `table` rather than `block` is only necessary if using
+ * `::before` to contain the top-margins of child elements.
+ */
+
+.clearfix::before,
+.clearfix::after {
+  content: "";
+  display: table;
+}
+
+.clearfix::after {
+  clear: both;
+}
+
+/* ==========================================================================
+   EXAMPLE Media Queries for Responsive Design.
+   These examples override the primary ('mobile first') styles.
+   Modify as content requires.
+   ========================================================================== */
+
+@media only screen and (min-width: 35em) {
+  /* Style adjustments for viewports that meet the condition */
+}
+
+@media print,
+  (-webkit-min-device-pixel-ratio: 1.25),
+  (min-resolution: 1.25dppx),
+  (min-resolution: 120dpi) {
+  /* Style adjustments for high resolution devices */
+}
+
+/* ==========================================================================
+   Print styles.
+   Inlined to avoid the additional HTTP request:
+   https://www.phpied.com/delay-loading-your-print-css/
+   ========================================================================== */
+
+@media print {
+  *,
+  *::before,
+  *::after {
+    background: #fff !important;
+    color: #000 !important;
+    /* Black prints faster */
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  a,
+  a:visited {
+    text-decoration: underline;
+  }
+
+  a[href]::after {
+    content: " (" attr(href) ")";
+  }
+
+  abbr[title]::after {
+    content: " (" attr(title) ")";
+  }
+
+  /*
+   * Don't show links that are fragment identifiers,
+   * or use the `javascript:` pseudo protocol
+   */
+  a[href^="#"]::after,
+  a[href^="javascript:"]::after {
+    content: "";
+  }
+
+  pre {
+    white-space: pre-wrap !important;
+  }
+
+  pre,
+  blockquote {
+    border: 1px solid #999;
+    page-break-inside: avoid;
+  }
+
+  tr,
+  img {
+    page-break-inside: avoid;
+  }
+
+  p,
+  h2,
+  h3 {
+    orphans: 3;
+    widows: 3;
+  }
+
+  h2,
+  h3 {
+    page-break-after: avoid;
+  }
+}
+
+/*
+ * Feuerstadt Einsatztaktik Tafel
+ */
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+}
+
+.container {
+  display: flex;
+  height: 100vh;
+}
+
+.sidebar {
+  width: 220px;
+  background: #f9f9f9;
+  padding: 10px;
+  box-shadow: inset 0 0 5px #999;
+  overflow-y: auto;
+}
+
+.sidebar h3, .sidebar h4 {
+  margin: 10px 0;
+}
+
+textarea, input {
+  width: 90%;
+  margin: 5px 0;
+}
+
+.canvas-container {
+  flex: 1;
+  position: relative;
+  background: white;
+  border: 2px solid #333;
+  overflow: hidden;
+}
+
+#drawingCanvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.toolbar {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: rgba(255,255,255,0.9);
+  border: 1px solid #333;
+  padding: 5px;
+  border-radius: 6px;
+  z-index: 10;
+}
+
+.toolbar button {
+  margin: 2px;
+  cursor: pointer;
+}
+
+.section {
+  margin-bottom: 15px;
+  padding: 5px;
+  border: 1px solid #999;
+  border-radius: 4px;
+}
+
+.yellow { border-color: gold; color: goldenrod; }
+.green { border-color: green; color: darkgreen; }
+.blue { border-color: blue; color: darkblue; }
+.red { border-color: red; color: darkred; }
+
+.vehicle {
+  background: white;
+  border: 1px solid #444;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.einsatz {
+  background: #e60000;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.platz {
+  background: #d9d9d9;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.kdow {
+  background: #ff4d4d;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.elw1 {
+  background: #3399ff;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.elw2 {
+  background: #0066ff;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  color: white;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.lfhlf {
+  background: #33cc33;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.dlk {
+  background: #ffcc33;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.wlf {
+  background: #9933ff;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.mzf {
+  background: #ff66b2;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.rw2 {
+  background: #ff8533;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.gwl1 {
+  background: #33ffff;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.gwl2 {
+  background: #ff6600;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.nef {
+  background: #cc3300;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.rtw {
+  background: #009999;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle.nktw {
+  background: #66ffcc;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 4px 0;
+  text-align: center;
+  cursor: grab;
+  border-radius: 5px;
+}
+
+.vehicle:active {
+  cursor: grabbing;
+}
+
+/* Fahrzeuge, die auf die Fläche gezogen werden */
+.dropped-vehicle {
+  position: absolute;
+  padding: 3px 6px;
+  background: #fff;
+  border: 1px solid #222;
+  border-radius: 4px;
+  cursor: move;
+  font-size: 12px;
+}
+
+/* Haupt-Header-Container */
+.main-header {
+  display: flex;                 /* Elemente nebeneinander anordnen */
+  justify-content: space-between;/* Logo links, Text rechts */
+  align-items: center;           /* Vertikal zentrieren */
+  padding: 10px 20px;            /* Innenabstand */
+  background-color: #222;        /* Dunkler Hintergrund */
+  color: white;                  /* Textfarbe */
+  font-family: Arial, sans-serif;
+}
+
+/* Logo-Bereich */
+.main-header__logo img {
+  height: 50px;                  /* Höhe des Logos */
+  width: auto;                   /* Breite proportional */
+}
+
+/* Titel/Text-Bereich */
+.main-header__title {
+  font-size: 1.2rem;             /* Textgröße */
+  font-weight: bold;             /* Fettdruck */
+  text-align: right;             /* Text rechtsbündig */
+}
+
+.department {
+  margin-bottom: 10px;
+}
+
+.toggle {
+  width: 100%;
+  text-align: left;
+  padding: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  background: #eee;
+  border: none;
+  border-radius: 4px;
+}
+
+.vehicles {
+  margin-top: 5px;
+  padding-left: 15px;
+}
+
+.hidden {
+  display: none;
+}
+
+.vehicle {
+  background: #f8f8f8;
+  margin: 3px 0;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  cursor: grab;
+}
+
+.layer-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.9);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  font-family: Arial, sans-serif;
+}
+.layer-menu label {
+  display: block;
+  cursor: pointer;
+  margin: 4px 0;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+table, th, td {
+  border: 1px solid #aaa;
+}
+th, td {
+  padding: 6px;
+  text-align: left;
+}
+th {
+  background: #bcbbbb;
+  color: white;
+}
+input, textarea {
+  width: 98%;
+  border: none;
+  font-family: Arial, sans-serif;
+  font-size: 0.9rem;
+  background-color: #ebebeb;
+}
+textarea {
+  resize: vertical;
+}
+
+.main-header-tabellen {
+  justify-content: space-between;/* Logo links, Text rechts */
+  align-items: center;           /* Vertikal zentrieren */
+  padding: 10px 20px;            /* Innenabstand */
+  background-color: #222;        /* Dunkler Hintergrund */
+  color: white;                  /* Textfarbe */
+  font-family: Arial, sans-serif;
+}

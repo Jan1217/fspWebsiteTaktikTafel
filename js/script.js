@@ -74,12 +74,16 @@ const hydrantsImage = new Image();
 hydrantsImage.src = "img/Karte-Hydranten.png";
 hydrantsImage.onload = redraw;
 
+const brsImage = new Image();
+brsImage.src = "img/Karte-Hydranten.png";
+brsImage.onload = redraw;
 
 //
 // Layer-Zustände
 //
 let showBackground = true;
 let showHydrants = false;
+let showBrs = false;
 
 
 //
@@ -271,6 +275,7 @@ function redraw() {
   // Karten
   if (showBackground) drawBackgroundImage(background);
   if (showHydrants) drawBackgroundImage(hydrantsImage);
+  if (showBrs) drawBackgroundImage(brsImage);
 
   // Linien
   drawings.forEach(d => {

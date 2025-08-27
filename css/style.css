@@ -245,19 +245,32 @@ textarea {
   }
 }
 
-/*
- * Feuerstadt Einsatztaktik Tafel
+/*! Feuerwehr Einsatztafel Stylesheet
+ *  Strukturierte Version mit Kommentaren
+ *  MIT License
+ *  ----------------------------------------------------------------------------
+ *  Enthält Layout, Sidebar, Toolbar, Canvas, Fahrzeuge & Tabellen
  */
 
+/* ==========================================================================
+   Base styles
+   ========================================================================== */
+
 body {
-  margin: 0;
+  margin: 30px;
+  background-color: #444;
   font-family: Arial, sans-serif;
 }
 
+/* Container Layout */
 .container {
   display: flex;
   height: 100vh;
 }
+
+/* ==========================================================================
+   Sidebar
+   ========================================================================== */
 
 .sidebar {
   width: 220px;
@@ -267,14 +280,21 @@ body {
   overflow-y: auto;
 }
 
-.sidebar h3, .sidebar h4 {
+.sidebar h3,
+.sidebar h4 {
   margin: 10px 0;
 }
 
-textarea, input {
+/* Formularelemente in Sidebar */
+textarea,
+input {
   width: 90%;
   margin: 5px 0;
 }
+
+/* ==========================================================================
+   Canvas & Toolbar
+   ========================================================================== */
 
 .canvas-container {
   flex: 1;
@@ -290,6 +310,7 @@ textarea, input {
   display: block;
 }
 
+/* Toolbar oben links */
 .toolbar {
   position: absolute;
   top: 10px;
@@ -306,6 +327,28 @@ textarea, input {
   cursor: pointer;
 }
 
+/* Layer-Auswahl oben rechts */
+.layer-menu {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(255,255,255,0.9);
+  padding: 8px;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  font-family: Arial, sans-serif;
+}
+
+.layer-menu label {
+  display: block;
+  cursor: pointer;
+  margin: 4px 0;
+}
+
+/* ==========================================================================
+   Abschnitte & Farbcodierung
+   ========================================================================== */
+
 .section {
   margin-bottom: 15px;
   padding: 5px;
@@ -313,177 +356,49 @@ textarea, input {
   border-radius: 4px;
 }
 
-.yellow { border-color: gold; color: goldenrod; }
-.green { border-color: green; color: darkgreen; }
-.blue { border-color: blue; color: darkblue; }
-.red { border-color: red; color: darkred; }
+.yellow { border-color: gold;   color: goldenrod; }
+.green  { border-color: green;  color: darkgreen; }
+.blue   { border-color: blue;   color: darkblue; }
+.red    { border-color: red;    color: darkred; }
 
+/* ==========================================================================
+   Fahrzeuge (Sidebar & Canvas)
+   ========================================================================== */
+
+/* Grundlayout Fahrzeuge */
 .vehicle {
-  background: white;
+  background: #f8f8f8;
   border: 1px solid #444;
   padding: 5px;
   margin: 4px 0;
   text-align: center;
-  cursor: grab;
   border-radius: 5px;
+  cursor: grab;
 }
 
-.vehicle.einsatz {
-  background: #e60000;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.platz {
-  background: #d9d9d9;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.kdow {
-  background: #ff4d4d;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.elw1 {
-  background: #3399ff;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.elw2 {
-  background: #0066ff;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  color: white;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.lfhlf {
-  background: #33cc33;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.dlk {
-  background: #ffcc33;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.wlf {
-  background: #9933ff;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.mzf {
-  background: #ff66b2;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.rw2 {
-  background: #ff8533;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.gwl1 {
-  background: #33ffff;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.gwl2 {
-  background: #ff6600;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.nef {
-  background: #cc3300;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.rtw {
-  background: #009999;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
-.vehicle.nktw {
-  background: #66ffcc;
-  border: 2px solid black;
-  padding: 5px;
-  margin: 4px 0;
-  text-align: center;
-  cursor: grab;
-  border-radius: 5px;
-}
-
+/* Fahrzeug beim Ziehen */
 .vehicle:active {
   cursor: grabbing;
 }
 
-/* Fahrzeuge, die auf die Fläche gezogen werden */
+/* Fahrzeuge mit spezifischen Typen */
+.vehicle.einsatz { background: #e60000; border: 2px solid black; }
+.vehicle.platz   { background: #d9d9d9; border: 2px solid black; }
+.vehicle.kdow    { background: #ff4d4d; border: 2px solid black; }
+.vehicle.elw1    { background: #3399ff; border: 2px solid black; }
+.vehicle.elw2    { background: #0066ff; border: 2px solid black; color: white; }
+.vehicle.lfhlf   { background: #33cc33; border: 2px solid black; }
+.vehicle.dlk     { background: #ffcc33; border: 2px solid black; }
+.vehicle.wlf     { background: #9933ff; border: 2px solid black; }
+.vehicle.mzf     { background: #ff66b2; border: 2px solid black; }
+.vehicle.rw2     { background: #ff8533; border: 2px solid black; }
+.vehicle.gwl1    { background: #33ffff; border: 2px solid black; }
+.vehicle.gwl2    { background: #ff6600; border: 2px solid black; }
+.vehicle.nef     { background: #cc3300; border: 2px solid black; }
+.vehicle.rtw     { background: #009999; border: 2px solid black; }
+.vehicle.nktw    { background: #66ffcc; border: 2px solid black; }
+
+/* Fahrzeuge, die auf die Einsatzfläche gezogen wurden */
 .dropped-vehicle {
   position: absolute;
   padding: 3px 6px;
@@ -494,29 +409,45 @@ textarea, input {
   font-size: 12px;
 }
 
+/* ==========================================================================
+   Header
+   ========================================================================== */
+
 /* Haupt-Header-Container */
 .main-header {
-  display: flex;                 /* Elemente nebeneinander anordnen */
-  justify-content: space-between;/* Logo links, Text rechts */
-  align-items: center;           /* Vertikal zentrieren */
-  padding: 10px 20px;            /* Innenabstand */
-  background-color: #222;        /* Dunkler Hintergrund */
-  color: white;                  /* Textfarbe */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #222;
+  color: white;
   font-family: Arial, sans-serif;
 }
 
-/* Logo-Bereich */
+/* Logo */
 .main-header__logo img {
-  height: 50px;                  /* Höhe des Logos */
-  width: auto;                   /* Breite proportional */
+  height: 50px;
+  width: auto;
 }
 
-/* Titel/Text-Bereich */
+/* Titel/Text */
 .main-header__title {
-  font-size: 1.2rem;             /* Textgröße */
-  font-weight: bold;             /* Fettdruck */
-  text-align: right;             /* Text rechtsbündig */
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: right;
 }
+
+/* Tabellen-Header */
+.main-header-tabellen {
+  padding: 10px 20px;
+  background-color: #222;
+  color: white;
+  font-family: Arial, sans-serif;
+}
+
+/* ==========================================================================
+   Departments / Fahrzeuglisten
+   ========================================================================== */
 
 .department {
   margin-bottom: 10px;
@@ -542,63 +473,41 @@ textarea, input {
   display: none;
 }
 
-.vehicle {
-  background: #f8f8f8;
-  margin: 3px 0;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 3px;
-  cursor: grab;
-}
-
-.layer-menu {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  background: rgba(255,255,255,0.9);
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  font-family: Arial, sans-serif;
-}
-.layer-menu label {
-  display: block;
-  cursor: pointer;
-  margin: 4px 0;
-}
+/* ==========================================================================
+   Tabellen
+   ========================================================================== */
 
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 10px;
 }
+
 table, th, td {
   border: 1px solid #aaa;
 }
+
 th, td {
   padding: 6px;
   text-align: left;
+  background-color: #ebebeb;
 }
+
 th {
   background: #bcbbbb;
   color: white;
 }
-input, textarea {
+
+/* Formularfelder in Tabellen */
+input,
+textarea {
   width: 98%;
   border: none;
   font-family: Arial, sans-serif;
   font-size: 0.9rem;
   background-color: #ebebeb;
 }
+
 textarea {
   resize: vertical;
-}
-
-.main-header-tabellen {
-  justify-content: space-between;/* Logo links, Text rechts */
-  align-items: center;           /* Vertikal zentrieren */
-  padding: 10px 20px;            /* Innenabstand */
-  background-color: #222;        /* Dunkler Hintergrund */
-  color: white;                  /* Textfarbe */
-  font-family: Arial, sans-serif;
 }

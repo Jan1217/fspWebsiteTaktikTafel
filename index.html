@@ -16,6 +16,8 @@
     <link rel="apple-touch-icon" href="icon.png">
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#fafafa">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   </head>
   <header class="main-header">
     <!-- Linke Seite: Logo -->
@@ -102,6 +104,11 @@
         </p>
         <button id="clearCanvas" style="padding:10px 20px; background:#c00; color:white; border:none; border-radius:8px; cursor:pointer;">
           Karten Inhalt Löschen
+        </button>
+        <p>
+        </p>
+        <button id="downloadPDF" style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:8px; cursor:pointer;">
+          Ganze Seite als PDF speichern
         </button>
       </div>
       <!-- Malfläche -->

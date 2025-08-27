@@ -67,11 +67,11 @@ const vehicleColors = {
 // Hintergrundbilder
 //
 const background = new Image();
-background.src = "https://cdn.discordapp.com/attachments/1341541500000927780/1409879174977683456/overview_ohne_pda.png?ex=68aefbcd&is=68adaa4d&hm=40d7c01f5b8788556cad6c6b87dc0d318652075a8ce3aa0934fc5ab49ad728c2&";
+background.src = "img/Karte-Normal.png";
 background.onload = redraw;
 
 const hydrantsImage = new Image();
-hydrantsImage.src = "https://cdn.discordapp.com/attachments/1341541500000927780/1410169271073640449/Hydrantenplan_-_Feuerstadt.png?ex=68b009f9&is=68aeb879&hm=23c3e9201efcd399d051cd8404e940365041250cf26a382a2386de1b3ce31e07&";
+hydrantsImage.src = "img/Karte-Hydranten.png";
 hydrantsImage.onload = redraw;
 
 
@@ -439,3 +439,44 @@ function clearFields() {
   document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
 }
 
+document.getElementById("downloadPDF").addEventListener("click", () => {
+  const element = document.body;
+  const drawingCanvas = document.getElementById("drawingCanvas");
+
+  html2canvas(element, {
+    scale: 2,
+    useCORS: true,
+    ignoreElements: el => el.id === "drawingCanvas"
+  }).then(pageCanvas => {
+    const pageImgData = pageCanvas.toDataURL("image/png");
+    const canvasImgData = drawingCanvas.toDataURL("image/png");
+
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF("p", "mm", "a4");
+
+    const pageWidth = pdf.internal.pageSize.getWidth();
+    const pageHeight = pdf.internal.pageSize.getHeight();
+
+    // Seite einfügen
+    const imgWidth = pageWidth;
+    const imgHeight = (pageCanvas.height * imgWidth) / pageCanvas.width;
+    pdf.addImage(pageImgData, "PNG", 0, 0, imgWidth, imgHeight);
+
+    // Canvas zentrieren
+    const canvasAspect = drawingCanvas.width / drawingCanvas.height;
+    let canvasWidthMM = pageWidth * 0.9; // 90% der Seitenbreite
+    let canvasHeightMM = canvasWidthMM / canvasAspect;
+
+    if (canvasHeightMM > pageHeight * 0.9) {
+      canvasHeightMM = pageHeight * 0.9;
+      canvasWidthMM = canvasHeightMM * canvasAspect;
+    }
+
+    const x = (pageWidth - canvasWidthMM) / 2;
+    const y = (pageHeight - canvasHeightMM) / 2;
+
+    pdf.addImage(canvasImgData, "PNG", x, y, canvasWidthMM, canvasHeightMM);
+
+    pdf.save("einsatzdokumentation.pdf");
+  });
+});

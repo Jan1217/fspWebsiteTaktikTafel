@@ -545,3 +545,7 @@ canvas.addEventListener("mousedown", e => {
     return;
   }
 });
+
+// Firebase initialisieren
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();

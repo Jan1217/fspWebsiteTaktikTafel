@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg color="black" fill="transparent" stroke="black" stroke-width="2" viewBox="0 0 45 36" xmlns="http://www.w3.org/2000/svg"><defs><clipPath id="tz_anlass"><path d="M1,0.6 L22.5,34 L44,0.6 Z" /></clipPath></defs><path d="M1,0.6 L22.5,34 L44,0.6" fill="white" /><g clip-path="url(#tz_anlass)"><g transform="translate(19.441176470588236,5) scale(0.47058823529411764)"><g><clipPath id="tz_brand-clip"><path d="M13,0 v34 h-12.5 Z" /></clipPath><path clip-path="url(#tz_brand-clip)" d="M12,5 v28 h-10 l12,-33" stroke="#cc0000" /></g></g></g></svg>

@@ -39,6 +39,7 @@ let draggingVehiclePreview = null;
 //
 let currentColor = "black";
 let currentWidth = 2;
+let mode = "move";
 
 
 //
@@ -67,19 +68,28 @@ const vehicleColors = {
 // Hintergrundbilder
 //
 const background = new Image();
-background.src = "img/Karte-Normal.png";
+background.src = "img/overview_ohne_pda.png";
 background.onload = redraw;
 
+const pdaImage = new Image();
+pdaImage.src = "img/overview_mit_pda.png";
+pdaImage.onload = redraw;
+
 const hydrantsImage = new Image();
-hydrantsImage.src = "img/Karte-Hydranten.png";
+hydrantsImage.src = "img/overview_mit_hydrant.png";
 hydrantsImage.onload = redraw;
 
+const brsImage = new Image();
+brsImage.src = "img/overview_mit_bsr.png";
+brsImage.onload = redraw;
 
 //
 // Layer-Zustände
 //
 let showBackground = true;
+let showPDA = false;
 let showHydrants = false;
+let showBrs = false;
 
 
 //
@@ -121,7 +131,7 @@ canvas.addEventListener("mousedown", e => {
   const x = (e.offsetX - originX) / scale;
   const y = (e.offsetY - originY) / scale;
 
-  // Pan mit Rechtsklick
+  // Pan mit Rechtsklick (immer möglich)
   if (e.button === 2) {
     panning = true;
     panStartX = e.offsetX - originX;
@@ -146,35 +156,39 @@ canvas.addEventListener("mousedown", e => {
     return;
   }
 
-  // Dragging prüfen
-  const item = findItemAt(x, y);
-  if (item) {
-    draggingItem = item;
-    dragOffsetX = x - item.x;
-    dragOffsetY = y - item.y;
-    return;
+  // === NUR WENN Move-Modus aktiv ist: Dragging starten ===
+  if (mode === "move") {
+    const item = findItemAt(x, y);
+    if (item) {
+      draggingItem = item;
+      dragOffsetX = x - item.x;
+      dragOffsetY = y - item.y;
+      return;
+    }
   }
 
-  // Zeichnen starten
-  painting = true;
-  drawings.push({
-    x1: x, y1: y,
-    x2: x, y2: y,
-    color: currentColor,
-    width: currentWidth / scale
-  });
+  // === NUR WENN Paint-Modus aktiv ist: Zeichnen starten ===
+  if (mode === "paint") {
+    painting = true;
+    drawings.push({
+      x1: x, y1: y,
+      x2: x, y2: y,
+      color: currentColor,
+      width: currentWidth / scale
+    });
+  }
 });
 
 canvas.addEventListener("mousemove", e => {
   const x = (e.offsetX - originX) / scale;
   const y = (e.offsetY - originY) / scale;
 
-  // Zeichnen
-  if (painting) {
+  // Nur im Paint-Modus zeichnen
+  if (mode === "paint" && painting) {
     const last = drawings[drawings.length - 1];
     last.x2 = x; last.y2 = y;
     drawings.push({
-      x1: x, y1: y,
+      x1: last.x2, y1: last.y2,
       x2: x, y2: y,
       color: currentColor,
       width: currentWidth / scale
@@ -182,14 +196,14 @@ canvas.addEventListener("mousemove", e => {
     redraw();
   }
 
-  // Draggen
-  if (draggingItem) {
+  // Nur im Move-Modus Items bewegen
+  if (mode === "move" && draggingItem) {
     draggingItem.x = x - dragOffsetX;
     draggingItem.y = y - dragOffsetY;
     redraw();
   }
 
-  // Panning
+  // Panning (immer möglich)
   if (panning) {
     originX = e.offsetX - panStartX;
     originY = e.offsetY - panStartY;
@@ -268,9 +282,13 @@ function redraw() {
   ctx.setTransform(scale, 0, 0, scale, originX, originY);
   ctx.clearRect(-originX / scale, -originY / scale, canvas.width / scale, canvas.height / scale);
 
-  // Karten
+  // Hintergrund immer zuerst
   if (showBackground) drawBackgroundImage(background);
+
+  // Layer (werden transparent über Background gezeichnet)
+  if (showPDA) drawBackgroundImage(pdaImage);
   if (showHydrants) drawBackgroundImage(hydrantsImage);
+  if (showBrs) drawBackgroundImage(brsImage);
 
   // Linien
   drawings.forEach(d => {
@@ -343,7 +361,7 @@ function clearCanvas() {
 //
 // Toolbar: Farben & Strichstärken
 //
-const colors = ["black","red","green","blue","orange","purple"];
+const colors = ["black","white","red","green","blue","orange"];
 const widths = [1,2,4,6,8,12];
 const toolbar = document.querySelector(".toolbar");
 
@@ -403,8 +421,8 @@ document.querySelectorAll(".vehicle").forEach(v => {
 //
 // Layer-Checkbox Events
 //
-document.getElementById("layer-background").addEventListener("change", e => {
-  showBackground = e.target.checked;
+document.getElementById("layer-pda").addEventListener("change", e => {
+  showPDA = e.target.checked;
   redraw();
 });
 
@@ -413,24 +431,30 @@ document.getElementById("layer-hydrants").addEventListener("change", e => {
   redraw();
 });
 
+document.getElementById("layer-brs").addEventListener("change", e => {
+  showBrs = e.target.checked;
+  redraw();
+});
+
+
+//
+// Modus-Handling
+//
+function toggleMode(newMode) {
+  mode = newMode;
+  document.querySelectorAll(".mode-btn").forEach(btn => {
+    btn.style.background = (btn.dataset.mode === mode) ? "#ccc" : "white";
+  });
+}
+toggleMode("move"); // Start im Move-Modus
+
+document.querySelectorAll(".mode-btn").forEach(btn => {
+  btn.addEventListener("click", () => toggleMode(btn.dataset.mode));
+});
 
 //
 // Weiteren Code
 //
-
-document.querySelectorAll(".toggle").forEach(btn => {
-  btn.addEventListener("click", () => {
-    const vehicles = btn.nextElementSibling;
-    vehicles.classList.toggle("hidden");
-
-    // Pfeil ändern
-    if (vehicles.classList.contains("hidden")) {
-      btn.textContent = btn.textContent.replace("▲", "▼");
-    } else {
-      btn.textContent = btn.textContent.replace("▼", "▲");
-    }
-  });
-});
 
 function clearFields() {
   // alle Input-Felder leeren

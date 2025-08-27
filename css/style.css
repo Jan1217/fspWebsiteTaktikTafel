@@ -265,7 +265,6 @@ body {
 /* Container Layout */
 .container {
   display: flex;
-  height: 100vh;
 }
 
 /* ==========================================================================
@@ -312,12 +311,9 @@ input {
 
 /* Toolbar oben links */
 .toolbar {
-  position: absolute;
-  top: 10px;
-  left: 10px;
   background: rgba(255,255,255,0.9);
   border: 1px solid #333;
-  padding: 5px;
+  padding: 10px;
   border-radius: 6px;
   z-index: 10;
 }
@@ -329,18 +325,14 @@ input {
 
 /* Layer-Auswahl oben rechts */
 .layer-menu {
-  position: absolute;
-  top: 10px;
-  right: 10px;
   background: rgba(255,255,255,0.9);
-  padding: 8px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
-  font-family: Arial, sans-serif;
+  border: 1px solid #333;
+  padding: 10px;
+  border-radius: 6px;
 }
 
 .layer-menu label {
-  display: block;
+  display: inline-flex;
   cursor: pointer;
   margin: 4px 0;
 }
@@ -511,3 +503,162 @@ textarea {
 textarea {
   resize: vertical;
 }
+
+
+
+
+
+
+.container {
+  display: grid;
+  grid-template-areas:
+    "top top top"
+    "left center right"
+    "bottom-left bottom-center bottom-right";
+  grid-template-columns: 200px 1fr 200px;
+  grid-template-rows: auto 1fr auto;
+  gap: 10px;
+}
+
+.vehicles-top        { grid-area: top; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; background-color: lightgray; border-radius: 12px;}
+.vehicles-left       { grid-area: left; display: flex; justify-content: space-evenly; gap: 10px; flex-wrap: wrap; align-items: center; flex-direction: column; align-content: center; background-color: lightgray; border-radius: 12px;}
+.canvas-container    { grid-area: center; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; background-color: lightgray; border-radius: 12px;}
+.vehicles-right      { grid-area: right; display: flex; justify-content: space-evenly; gap: 10px; flex-wrap: wrap; align-items: center; flex-direction: column; align-content: center; background-color: lightgray; border-radius: 12px;}
+.vehicles-bottom-left    { grid-area: bottom-left; display: flex; justify-content: flex-start; gap: 10px; }
+.vehicles-bottom-center  { grid-area: bottom-center; display: flex; justify-content: center; gap: 10px; background-color: lightgray; border-radius: 12px;}
+.vehicles-bottom-right   { grid-area: bottom-right; display: flex; justify-content: flex-end; gap: 10px; }
+
+
+/* Fahrzeug-Karte */
+.vehicle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  padding: 12px;
+  margin-bottom: 10px;
+  gap: 6px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+
+  background: #fff;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+  cursor: grab;
+  transition: all 0.25s ease;
+}
+
+.vehicle:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
+}
+
+.vehicle img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  transition: transform 0.25s ease;
+}
+
+.vehicle:hover img {
+  transform: scale(1.05);
+}
+
+/* Überschriften */
+h3 {
+  text-align: center;
+  font-size: 16px;
+  margin: 12px 0 8px;
+  font-weight: 700;
+  color: #c00;
+  padding: 6px;
+  border: 2px solid #c00;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+h4 {
+  margin: 4px 0;
+  font-size: 13px;
+  text-align: center;
+  color: #555;
+  font-weight: 500;
+}
+
+/* Buttons */
+.btn {
+  border: none;
+  padding: 12px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+
+  width: 100%;
+  display: block;
+
+  transition: all 0.25s ease;
+}
+
+/* Rote Buttons */
+.btn-red {
+  background: #c00;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(204,0,0,0.4);
+}
+
+.btn-red:hover {
+  background: #a00;
+  transform: translateY(-2px);
+}
+
+/* Blaue Buttons */
+.btn-blue {
+  background: #007bff;
+  color: #fff;
+  box-shadow: 0 3px 8px rgba(0,123,255,0.4);
+}
+
+.btn-blue:hover {
+  background: #0069d9;
+  transform: translateY(-2px);
+}
+
+/* Button-Bar */
+.button-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.vehicle-scroll {
+  display: flex;
+  overflow-x: auto; /* Scrollbar nur horizontal */
+  white-space: nowrap;
+  gap: 10px; /* Abstand zwischen den Fahrzeugen */
+  padding: 10px 0;
+}
+
+.vehicle-scroll::-webkit-scrollbar {
+  height: 8px; /* kleine Scrollbar */
+}
+
+.vehicle-scroll::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+.vehicle {
+  flex: 0 0 auto; /* verhindert, dass die Fahrzeuge schrumpfen */
+  text-align: center;
+}
+
+

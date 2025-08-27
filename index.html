@@ -31,129 +31,204 @@
   </header>
   <body>
     <div class="container">
-      <!-- Linke Eingaben -->
-      <div class="sidebar left">
-        <h3>Notizen:</h3>
-        <textarea rows="10"></textarea>
-        <h3>Fahrzeuge</h3>
-        <div class="department">
-          <button class="toggle">Symbole ▼</button>
-          <div class="vehicles hidden">
-            <div class="vehicle einsatz" draggable="true">Feuer 🔥</div>
-            <div class="vehicle einsatz" draggable="true">VU 🚗</div>
-            <div class="vehicle einsatz" draggable="true">Gefahrstoff 🧪</div>
-            <div class="vehicle platz" draggable="true">Bereitstellungsraum</div>
-            <div class="vehicle platz" draggable="true">Patientenablageplatz</div>
+      <!-- Oben: Abteilung 1 -->
+      <div class="vehicles-top">
+        <div class="vehicle-scroll">
+          <p></p>
+          <div class="toolbar">
+            <button class="mode-btn" data-mode="move">Verschieben</button>
+            <button class="mode-btn" data-mode="paint">Malen</button>
+          </div>
+          <div class="layer-menu">
+            <label><input type="checkbox" id="layer-pda"> PDA anzeigen</label>
+            <label><input type="checkbox" id="layer-hydrants"> Hydranten anzeigen</label>
+            <label><input type="checkbox" id="layer-brs"> Bereitstellungsraum anzeigen</label>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTBRAND1.svg" alt=""><span>Entstehungsbrand</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTBRAND2.svg" alt=""><span>Fortentwickelter Brand</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTBRAND3.svg" alt=""><span>Vollbrand</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTUNFALL.svg" alt=""><span>TH</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTGEFAHRGUT.svg" alt=""><span>Gefahrstoff</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTVERPF.png" alt=""><span>Verpflegungsstelle</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTBSR.png" alt=""><span>Bereitstellungsraum</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTPAT.png" alt=""><span>Patientenablage</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTBHP.png" alt=""><span>Behandlungsplatz</span>
+          </div>
+          <div class="vehicle" draggable="true">
+            <img src="img/LSTBTP.png" alt=""><span>Betreuungsplatz</span>
+          </div>
+          <div class="vehicle">
+            <img src="img/LSTFLBRAND.png" alt=""><span>Flächenbrand</span>
+          </div>
+          <div class="vehicle">
+            <img src="img/LSTUEBRS.png" alt=""><span>Überschwemmtes Gebiet</span>
+          </div>
+          <div class="vehicle">
+            <img src="img/LSTAUSFALL.png" alt=""><span>Ausfall der Versorgung</span>
+          </div>
+          <div class="vehicle">
+            <img src="img/LSTSONSTIGES.png" alt=""><span>Sonstiges Ereignis</span>
+          </div>
+          <div class="vehicle">
+            <img src="img/LSTKONTA.png" alt=""><span>Kontaminiertes Gebiet</span>
+          </div>
+          <div class="vehicle">
+            <img src="img/LSTWASSER.png" alt=""><span>Hochwasser</span>
           </div>
         </div>
-        <div class="department">
-          <button class="toggle">Feuerwache 1 ▼</button>
-          <div class="vehicles hidden">
-            <div class="vehicle kdow" draggable="true">1/10 - KdoW</div>
-            <div class="vehicle elw1" draggable="true">1/11 - ELW1</div>
-            <div class="vehicle lfhlf" draggable="true">1/40 - StLF</div>
-            <div class="vehicle dlk" draggable="true">1/33 - DLK</div>
-            <div class="vehicle lfhlf" draggable="true">1/46 - HLF20</div>
-            <div class="vehicle wlf" draggable="true">1/65 - WLF</div>
-            <div class="vehicle mzf" draggable="true">1/19 - MZF</div>
-          </div>
-        </div>
-        <div class="department">
-          <button class="toggle">Abteilung 2 ▼</button>
-          <div class="vehicles hidden">
-            <div class="vehicle elw1" draggable="true">2/11 - ELW1</div>
-            <div class="vehicle lfhlf" draggable="true">2/42 - LF10</div>
-            <div class="vehicle dlk" draggable="true">2/33 - DLK</div>
-            <div class="vehicle lfhlf" draggable="true">2/46 - HLF20</div>
-            <div class="vehicle rw2" draggable="true">2/52 - RW2</div>
-          </div>
-        </div>
-        <div class="department">
-          <button class="toggle">Abteilung 3 ▼</button>
-          <div class="vehicles hidden">
-            <div class="vehicle lfhlf" draggable="true">3/43 - HLF10</div>
-            <div class="vehicle elw2" draggable="true">3/12 - ELW2</div>
-          </div>
-        </div>
-        <div class="department">
-          <button class="toggle">Abteilung 4 ▼</button>
-          <div class="vehicles hidden">
-            <div class="vehicle lfhlf" draggable="true">4/44 - LF16/12</div>
-            <div class="vehicle gwl2" draggable="true">4/74 - GW-L2</div>
-          </div>
-        </div>
-        <div class="department">
-          <button class="toggle">Rettungswache 1 ▼</button>
-          <div class="vehicles hidden">
-            <div class="vehicle nef" draggable="true">1/82-1 - NEF</div>
-            <div class="vehicle rtw" draggable="true">1/83-1 - RTW</div>
-            <div class="vehicle rtw" draggable="true">1/83-2 - RTW</div>
-            <div class="vehicle nktw" draggable="true">1/85-1 - N-KTW</div>
-          </div>
-        </div>
-        <div class="department">
-          <button class="toggle">Rettungswache 2 ▼</button>
-          <div class="vehicles hidden">
-            <div class="vehicle rtw" draggable="true">2/83-1 - RTW</div>
-          </div>
-        </div>
-        <button onclick="clearFields()" style="padding:10px 20px; background:#c00; color:white; border:none; border-radius:8px; cursor:pointer;">
-          Textfelder Inhalt Löschen
-        </button>
-        <p>
-        </p>
-        <button id="clearCanvas" style="padding:10px 20px; background:#c00; color:white; border:none; border-radius:8px; cursor:pointer;">
-          Karten Inhalt Löschen
-        </button>
-        <p>
-        </p>
-        <button id="downloadPDF" style="padding:10px 20px; background:#007bff; color:white; border:none; border-radius:8px; cursor:pointer;">
-          Ganze Seite als PDF speichern
-        </button>
       </div>
-      <!-- Malfläche -->
+
+      <!-- Mitte: Canvas -->
       <div class="canvas-container" id="dropZone">
         <canvas id="drawingCanvas"></canvas>
+      </div>
 
-        <div class="toolbar">
+      <!-- Links: Abteilung 1 und 4 -->
+      <div class="vehicles-left">
+        <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-right: 2px solid #c00;">— Abteilung 1 —</h3>
+        <div class="vehicle" draggable="true">
+          <img src="img/110.svg" alt="KdoW"><span>1/10 - KdoW</span>
         </div>
-        <div class="layer-menu">
-          <label>
-            <input type="checkbox" id="layer-background" checked>
-            Karte - Normal
-          </label>
-          <label>
-            <input type="checkbox" id="layer-hydrants">
-            Karte - Hydranten
-          </label>
+        <div class="vehicle" draggable="true">
+          <img src="img/111.svg" alt="ELW1"><span>1/11 - ELW1</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/140.svg" alt="StLF"><span>1/40 - StLF</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/133.svg" alt="DLK"><span>1/33 - DLK</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/146.svg" alt="HLF20"><span>1/46 - HLF20</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/165.svg" alt="WLF"><span>1/65 - WLF</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/117.svg" alt="MZF"><span>1/17 - MZF</span>
+        </div>
+
+        <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-right: 2px solid #c00;">— Abteilung 4 —</h3>
+        <div class="vehicle" draggable="true">
+          <img src="img/424.svg" alt="ELW1"><span>4/24 - TLF2000</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/494.svg" alt="StLF"><span>4/94 - GW-Mess</span>
         </div>
       </div>
-      <!-- Rechte Eingaben -->
-      <div class="sidebar right">
-        <h3>Abschnitte</h3>
-        <div class="section yellow">
-          <strong>EL:</strong><br>
-          TMO: <input type="text"> DMO: <input type="text"><br>
-          <small>Funkgruppe EL - EAL</small><br>
-          Notiz: <textarea></textarea>
+
+      <!-- Unten Links: -->
+      <div class="vehicles-bottom-left">
+
+      </div>
+
+      <!-- Unten: Abteilung 3 und 4, RW1, RW2, Fiktiv: POL, NEF, RD, RTH-->
+      <div class="vehicles-bottom-center">
+        <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-bottom: 2px solid #c00;">— RW 1 —</h3>
+        <div class="vehicle" draggable="true">
+          <img src="img/NEF.svg" alt="ELW1"><span>1/82-1 - NEF</span>
         </div>
-        <div class="section green">
-          <strong>EA 1 Auftrag:</strong><br>
-          EAL 1: <input type="text"><br>
-          TMO: <input type="text"> DMO: <input type="text"><br>
-          Notiz: <textarea></textarea>
+        <div class="vehicle" draggable="true">
+          <img src="img/RTW.svg" alt="StLF"><span>1/83-1 - RTW</span>
         </div>
-        <div class="section blue">
-          <strong>EA 2 Auftrag:</strong><br>
-          EAL 2: <input type="text"><br>
-          TMO: <input type="text"> DMO: <input type="text"><br>
-          Notiz: <textarea></textarea>
+        <div class="vehicle" draggable="true">
+          <img src="img/RTW.svg" alt="ELW1"><span>1/83-2 - RTW</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/NKTW.svg" alt="StLF"><span>1/85-1 - NKTW</span>
+        </div>
+
+        <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-bottom: 2px solid #c00;">— RW 2 —</h3>
+        <div class="vehicle" draggable="true">
+          <img src="img/RTW2.svg" alt="ELW1"><span>2/83-1 - RTW</span>
+        </div>
+
+        <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-bottom: 2px solid #c00;">— Fiktiv —</h3>
+        <div class="vehicle" draggable="true">
+          <img src="img/LSTPOL.svg" alt="ELW1"><span>[LST] POL</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/LSTNEF.svg" alt="ELW1"><span>[LST] NEF</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/LSTRTW.svg" alt="ELW1"><span>[LST] RTW</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/LSTRTH.svg" alt="ELW1"><span>[LST] RTH</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/LSTRTHLPZ.svg" alt="ELW1"><span>[LST] RTH - Landeplatz</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/LSTTHW.svg" alt="ELW1"><span>[LST] THW</span>
+        </div>
+      </div>
+
+      <!-- Unten Links: -->
+      <div class="vehicles-bottom-right">
+        <div class="button-bar">
+          <button onclick="clearFields()" id="clearCanvas" class="btn btn-red">
+            Feuerstadt Einsatztaktik Tafel Löschen
+          </button>
+          <button id="downloadPDF" class="btn btn-blue">
+            Ganze Seite als PDF speichern
+          </button>
+        </div>
+      </div>
+
+
+      <!-- Rechts: Abteilung 2 und 3-->
+      <div class="vehicles-right">
+        <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-right: 2px solid #c00;">—  Abteilung 2  —</h3>
+        <div class="vehicle" draggable="true">
+          <img src="img/214.svg" alt="ELW1"><span>2/14 - MZF-EL</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/242.svg" alt="StLF"><span>2/42 - LF10</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/233.svg" alt="DLK"><span>2/33 - DLK</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/244.svg" alt="HLF20"><span>2/44 - LF20/16</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/252.svg" alt="WLF"><span>2/52 - RW2</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/273.svg" alt="MZF"><span>1/73 - GW-L1</span>
+        </div>
+
+        <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-right: 2px solid #c00;">—  Abteilung 3  —</h3>
+        <div class="vehicle" draggable="true">
+          <img src="img/343.svg" alt="ELW1"><span>3/43 - HLF10</span>
+        </div>
+        <div class="vehicle" draggable="true">
+          <img src="img/312.svg" alt="StLF"><span>3/12 - ELW2</span>
         </div>
       </div>
     </div>
-    <div>
+
+    <div style="background-color: white">
       <!-- Einsatzdokumentation -->
-      <div class="main-header" style="margin-top: 100px">
+      <div class="main-header" style="margin-top: 500px">
         <div class="main-header__logo">
           <img src="https://primary.jwwb.nl/public/p/s/h/temp-bolaxpwvnfuxqrvhisdc/fwfs-high.png?enable-io=true&enable=upscale&width=276" alt="Feuerstadt Logo">
         </div>
@@ -198,7 +273,8 @@
           <tr><td><input type="text"></td><td><textarea></textarea></td><td><textarea></textarea></td></tr>
         </table>
       </div>
-
+    </div>
+    <div style="background-color: white">
       <!-- Fahrzeugübersicht -->
       <div class="main-header" style="margin-top: 100px">
         <div class="main-header__logo">
@@ -265,7 +341,8 @@
           <tr><td>Rettung Feuerstadt 2/83-1 - RTW</td><td><input type="text"></td></tr>
         </table>
       </div>
-
+    </div>
+    <div style="background-color: white">
       <!-- MELDEN-Schema -->
       <div class="main-header" style="margin-top: 100px">
         <div class="main-header__logo">

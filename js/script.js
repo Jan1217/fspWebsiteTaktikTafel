@@ -438,3 +438,110 @@ function clearFields() {
   // alle Textareas leeren
   document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
 }
+
+// 🔹 Firebase Setup
+import { initializeApp } from "firebase/app";
+import { getDatabase, ref, set, onValue } from "firebase/database";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDPhM8Fosi81Bb2Cd6ZjmO_7Tc463iWvEc",
+  authDomain: "feuerstadt-einsatztafel.firebaseapp.com",
+  databaseURL: "https://feuerstadt-einsatztafel-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "feuerstadt-einsatztafel",
+  storageBucket: "feuerstadt-einsatztafel.firebasestorage.app",
+  messagingSenderId: "1024479855859",
+  appId: "1:1024479855859:web:470fb4ca0df35076286386"
+};
+
+const app = initializeApp(firebaseConfig);
+const database = getDatabase(app);
+
+// 🔹 Firebase References
+const drawingsRef = ref(database, "drawings");
+const iconsRef = ref(database, "icons");
+const vehiclesRef = ref(database, "vehicles");
+
+// 🔹 Synchronisation laden
+onValue(drawingsRef, (snapshot) => {
+  const data = snapshot.val();
+  if (data) drawings = data;
+  redraw();
+});
+
+onValue(iconsRef, (snapshot) => {
+  const data = snapshot.val();
+  if (data) icons = data;
+  redraw();
+});
+
+onValue(vehiclesRef, (snapshot) => {
+  const data = snapshot.val();
+  if (data) vehicles = data;
+  redraw();
+});
+
+// 🔹 Canvas Code bleibt unverändert, nur bei Änderungen speichern wir sie in Firebase
+function saveDrawings() {
+  set(drawingsRef, drawings);
+}
+function saveIcons() {
+  set(iconsRef, icons);
+}
+function saveVehicles() {
+  set(vehiclesRef, vehicles);
+}
+
+// Beispiel: Zeichnen speichern
+canvas.addEventListener("mouseup", () => {
+  painting = false;
+  draggingItem = null;
+  panning = false;
+  saveDrawings();
+  saveIcons();
+  saveVehicles();
+});
+
+// Drag & Drop Fahrzeuge
+canvas.addEventListener("drop", e => {
+  e.preventDefault();
+  const text = e.dataTransfer.getData("text/plain");
+  const type = e.dataTransfer.getData("type");
+  const x = (e.offsetX - originX) / scale;
+  const y = (e.offsetY - originY) / scale;
+  vehicles.push({ text, type, x, y });
+  draggingVehiclePreview = null;
+  saveVehicles();
+  redraw();
+});
+
+// Clear Canvas
+function clearCanvas() {
+  drawings = []; icons = []; vehicles = [];
+  scale = 1; originX = 0; originY = 0;
+  saveDrawings();
+  saveIcons();
+  saveVehicles();
+  redraw();
+}
+
+// Icon & Vehicle Platzierung speichern
+canvas.addEventListener("mousedown", e => {
+  const x = (e.offsetX - originX) / scale;
+  const y = (e.offsetY - originY) / scale;
+
+  if (currentIcon) {
+    icons.push({ icon: currentIcon, x, y });
+    currentIcon = null;
+    saveIcons();
+    redraw();
+    return;
+  }
+
+  if (currentVehicle) {
+    vehicles.push({ text: currentVehicle, type: null, x, y });
+    currentVehicle = null;
+    saveVehicles();
+    redraw();
+    return;
+  }
+});

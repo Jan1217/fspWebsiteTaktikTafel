@@ -1,5 +1,5 @@
 //
-// Canvas Setup
+// === Canvas Setup ===
 //
 const canvas = document.getElementById("drawingCanvas");
 const ctx = canvas.getContext("2d");
@@ -9,23 +9,17 @@ canvas.height = canvas.offsetHeight;
 
 
 //
-// Zoom & Pan
+// === Globale States ===
 //
 let scale = 1, originX = 0, originY = 0;
 let panning = false, panStartX = 0, panStartY = 0;
 
+let drawings = []; // {x1,y1,x2,y2,color,width}
+let icons = [];    // {icon,x,y}
+let vehicles = []; // {img,type,x,y,w,h}
+let polygons = []; // gespeicherte Polygone
+let currentPolygon = null; // { points: [ {x,y}, ... ], color }
 
-//
-// Canvas-Elemente
-//
-let drawings = []; // {x1, y1, x2, y2, color, width}
-let icons = [];    // {icon, x, y}
-let vehicles = []; // {text, type, x, y}
-
-
-//
-// States für Aktionen
-//
 let painting = false;
 let currentIcon = null;
 let currentVehicle = null;
@@ -33,39 +27,26 @@ let draggingItem = null;
 let dragOffsetX = 0, dragOffsetY = 0;
 let draggingVehiclePreview = null;
 
-
-//
-// Maloptionen
-//
 let currentColor = "black";
 let currentWidth = 2;
 let mode = "move";
 
 
 //
-// Fahrzeugfarben
+// === Fahrzeugfarben ===
 //
 const vehicleColors = {
-  einsatz: "#e60000",
-  kdow: "#ff4d4d",
-  mzf: "#ff66b2",
-  rw2: "#ff8533",
-  gwl2: "#ff6600",
-  dlk: "#ffcc33",
-  lfhlf: "#33cc33",
-  nktw: "#66ffcc",
-  rtw: "#009999",
-  gwl1: "#33ffff",
-  elw1: "#3399ff",
-  elw2: "#0066ff",
-  wlf: "#9933ff",
-  nef: "#cc3300",
-  platz: "#d9d9d9"
+  feuerwehr: "#FF4D4D",
+  fuehrung: "#FFD700",
+  hiorg: "#E6E6E6",
+  pol: "#90EE90",
+  thw: "#87CEFA",
+  taktik: "#F5F5F5"
 };
 
 
 //
-// Hintergrundbilder
+// === Hintergrundbilder ===
 //
 const background = new Image();
 background.src = "img/overview_ohne_pda.png";
@@ -83,9 +64,6 @@ const brsImage = new Image();
 brsImage.src = "img/overview_mit_bsr.png";
 brsImage.onload = redraw;
 
-//
-// Layer-Zustände
-//
 let showBackground = true;
 let showPDA = false;
 let showHydrants = false;
@@ -93,46 +71,112 @@ let showBrs = false;
 
 
 //
-// Hilfsfunktion: Item unter Maus finden
+// === Hilfsfunktionen ===
 //
 function findItemAt(x, y) {
   // Fahrzeuge prüfen
   for (let i = vehicles.length - 1; i >= 0; i--) {
     const v = vehicles[i];
-    ctx.font = `${20/scale}px Arial`;
-    const tm = ctx.measureText(v.text);
-    const w = tm.width;
-    const h = 20/scale;
-    const paddingX = 6/scale;
-    const paddingY = 4/scale;
-
-    if (x >= v.x - paddingX && x <= v.x + w + paddingX &&
-      y >= v.y - h - paddingY && y <= v.y + paddingY) {
-      return v;
-    }
+    if (x >= v.x && x <= v.x + v.w && y >= v.y && y <= v.y + v.h) return v;
   }
-
   // Icons prüfen
   for (let i = icons.length - 1; i >= 0; i--) {
     const ic = icons[i];
-    if (x >= ic.x - 10 && x <= ic.x + 30 &&
-      y >= ic.y - 15 && y <= ic.y + 15) {
-      return ic;
-    }
+    if (x >= ic.x - 10 && x <= ic.x + 30 && y >= ic.y - 15 && y <= ic.y + 15) return ic;
   }
   return null;
 }
 
+function drawBackgroundImage(img) {
+  const canvasRatio = canvas.width / canvas.height;
+  const imageRatio = img.width / img.height;
+  let drawWidth, drawHeight, offsetX, offsetY;
+
+  if (imageRatio > canvasRatio) {
+    drawWidth = canvas.width;
+    drawHeight = canvas.width / imageRatio;
+    offsetX = 0;
+    offsetY = (canvas.height - drawHeight) / 2;
+  } else {
+    drawHeight = canvas.height;
+    drawWidth = canvas.height * imageRatio;
+    offsetX = (canvas.width - drawWidth) / 2;
+    offsetY = 0;
+  }
+  ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
+}
+
+function drawVehicle(v) {
+  if (!v.img) return;
+  ctx.drawImage(v.img, v.x, v.y, v.w, v.h);
+}
+
+function drawPolygon(poly, preview = false) {
+  const pts = poly.points;
+  if (pts.length < 2) return;
+
+  ctx.beginPath();
+  ctx.moveTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) ctx.lineTo(pts[i].x, pts[i].y);
+
+  if (!preview) {
+    ctx.closePath();
+    ctx.fillStyle = poly.color;
+    ctx.fill();
+  }
+
+  ctx.strokeStyle = "black";
+  ctx.lineWidth = 2 / scale;
+  ctx.stroke();
+
+  pts.forEach(p => {
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, 4 / scale, 0, Math.PI * 2);
+    ctx.fillStyle = "black";
+    ctx.fill();
+  });
+}
+
+function redraw() {
+  ctx.setTransform(scale, 0, 0, scale, originX, originY);
+  ctx.clearRect(-originX / scale, -originY / scale, canvas.width / scale, canvas.height / scale);
+
+  if (showBackground) drawBackgroundImage(background);
+  if (showPDA) drawBackgroundImage(pdaImage);
+  if (showHydrants) drawBackgroundImage(hydrantsImage);
+  if (showBrs) drawBackgroundImage(brsImage);
+
+  drawings.forEach(d => {
+    ctx.beginPath();
+    ctx.moveTo(d.x1, d.y1);
+    ctx.lineTo(d.x2, d.y2);
+    ctx.strokeStyle = d.color;
+    ctx.lineWidth = d.width;
+    ctx.lineCap = "round";
+    ctx.stroke();
+  });
+
+  polygons.forEach(poly => drawPolygon(poly));
+  if (currentPolygon && currentPolygon.points.length > 0) drawPolygon(currentPolygon, true);
+
+  icons.forEach(i => {
+    ctx.font = `${24 / scale}px Arial`;
+    ctx.fillStyle = "#000";
+    ctx.fillText(i.icon, i.x, i.y);
+  });
+
+  vehicles.forEach(v => drawVehicle(v));
+}
+
 
 //
-// Event Listener: Canvas
+// === Event Listener: Canvas ===
 //
 canvas.addEventListener("mousedown", e => {
   const x = (e.offsetX - originX) / scale;
   const y = (e.offsetY - originY) / scale;
 
-  // Pan mit Rechtsklick (immer möglich)
-  if (e.button === 2) {
+  if (e.button === 2) { // Rechtsklick Pan
     panning = true;
     panStartX = e.offsetX - originX;
     panStartY = e.offsetY - originY;
@@ -140,7 +184,24 @@ canvas.addEventListener("mousedown", e => {
   }
   if (e.button !== 0) return;
 
-  // Icon platzieren
+  if (mode === "polygon") {
+    if (!currentPolygon) return;
+    const pts = currentPolygon.points;
+    pts.push({ x, y });
+
+    if (pts.length > 2) {
+      const first = pts[0];
+      const dx = x - first.x, dy = y - first.y;
+      if (Math.sqrt(dx*dx + dy*dy) < 10) {
+        polygons.push(currentPolygon);
+        currentPolygon = null;
+        toggleMode("move");
+      }
+    }
+    redraw();
+    return;
+  }
+
   if (currentIcon) {
     icons.push({ icon: currentIcon, x, y });
     currentIcon = null;
@@ -148,34 +209,29 @@ canvas.addEventListener("mousedown", e => {
     return;
   }
 
-  // Fahrzeug platzieren
   if (currentVehicle) {
-    vehicles.push({ text: currentVehicle, type: null, x, y });
+    const img = new Image();
+    img.src = currentVehicle;
+    img.onload = () => {
+      vehicles.push({ img, type: null, x, y, w: img.width/2, h: img.height/2 });
+      redraw();
+    };
     currentVehicle = null;
-    redraw();
     return;
   }
 
-  // === NUR WENN Move-Modus aktiv ist: Dragging starten ===
   if (mode === "move") {
     const item = findItemAt(x, y);
     if (item) {
       draggingItem = item;
       dragOffsetX = x - item.x;
       dragOffsetY = y - item.y;
-      return;
     }
   }
 
-  // === NUR WENN Paint-Modus aktiv ist: Zeichnen starten ===
   if (mode === "paint") {
     painting = true;
-    drawings.push({
-      x1: x, y1: y,
-      x2: x, y2: y,
-      color: currentColor,
-      width: currentWidth / scale
-    });
+    drawings.push({ x1: x, y1: y, x2: x, y2: y, color: currentColor, width: currentWidth / scale });
   }
 });
 
@@ -183,27 +239,19 @@ canvas.addEventListener("mousemove", e => {
   const x = (e.offsetX - originX) / scale;
   const y = (e.offsetY - originY) / scale;
 
-  // Nur im Paint-Modus zeichnen
   if (mode === "paint" && painting) {
     const last = drawings[drawings.length - 1];
     last.x2 = x; last.y2 = y;
-    drawings.push({
-      x1: last.x2, y1: last.y2,
-      x2: x, y2: y,
-      color: currentColor,
-      width: currentWidth / scale
-    });
+    drawings.push({ x1: last.x2, y1: last.y2, x2: x, y2: y, color: currentColor, width: currentWidth / scale });
     redraw();
   }
 
-  // Nur im Move-Modus Items bewegen
   if (mode === "move" && draggingItem) {
     draggingItem.x = x - dragOffsetX;
     draggingItem.y = y - dragOffsetY;
     redraw();
   }
 
-  // Panning (immer möglich)
   if (panning) {
     originX = e.offsetX - panStartX;
     originY = e.offsetY - panStartY;
@@ -219,7 +267,7 @@ canvas.addEventListener("mouseup", () => {
 
 canvas.addEventListener("wheel", e => {
   e.preventDefault();
-  const mouseX = e.offsetX, mouseY = e.offsetY;
+  const { offsetX: mouseX, offsetY: mouseY } = e;
   const delta = e.deltaY > 0 ? 0.9 : 1.1;
   const newScale = scale * delta;
 
@@ -233,142 +281,35 @@ canvas.addEventListener("contextmenu", e => e.preventDefault());
 
 
 //
-// Drag & Drop für Fahrzeuge
+// === Drag & Drop Fahrzeuge ===
 //
-canvas.addEventListener("dragover", e => { e.preventDefault(); redraw(); });
+canvas.addEventListener("dragover", e => e.preventDefault());
 canvas.addEventListener("drop", e => {
   e.preventDefault();
-  const text = e.dataTransfer.getData("text/plain");
+  const src = e.dataTransfer.getData("imgSrc");
   const type = e.dataTransfer.getData("type");
   const x = (e.offsetX - originX) / scale;
   const y = (e.offsetY - originY) / scale;
-  vehicles.push({ text, type, x, y });
-  draggingVehiclePreview = null;
-  redraw();
+
+  const img = new Image();
+  img.src = src;
+  img.onload = () => {
+    vehicles.push({ img, type, x, y, w: img.width/40, h: img.height/40 });
+    redraw();
+  };
 });
 canvas.addEventListener("dragleave", () => { draggingVehiclePreview = null; redraw(); });
 
 
 //
-// Karten Sklaierung
+// === Toolbar: Farben & Strichstärken ===
 //
-function drawBackgroundImage(img) {
-  const canvasRatio = canvas.width / canvas.height;
-  const imageRatio = img.width / img.height;
-  let drawWidth, drawHeight, offsetX, offsetY;
-
-  if (imageRatio > canvasRatio) {
-    // Bild ist breiter → an Canvas-Breite anpassen
-    drawWidth = canvas.width;
-    drawHeight = canvas.width / imageRatio;
-    offsetX = 0;
-    offsetY = (canvas.height - drawHeight) / 2;
-  } else {
-    // Bild ist höher → an Canvas-Höhe anpassen
-    drawHeight = canvas.height;
-    drawWidth = canvas.height * imageRatio;
-    offsetX = (canvas.width - drawWidth) / 2;
-    offsetY = 0;
-  }
-
-  ctx.drawImage(img, offsetX, offsetY, drawWidth, drawHeight);
-}
-
-
-//
-// Zeichnen: Redraw
-//
-function redraw() {
-  ctx.setTransform(scale, 0, 0, scale, originX, originY);
-  ctx.clearRect(-originX / scale, -originY / scale, canvas.width / scale, canvas.height / scale);
-
-  // Hintergrund immer zuerst
-  if (showBackground) drawBackgroundImage(background);
-
-  // Layer (werden transparent über Background gezeichnet)
-  if (showPDA) drawBackgroundImage(pdaImage);
-  if (showHydrants) drawBackgroundImage(hydrantsImage);
-  if (showBrs) drawBackgroundImage(brsImage);
-
-  // Linien
-  drawings.forEach(d => {
-    ctx.beginPath();
-    ctx.moveTo(d.x1, d.y1);
-    ctx.lineTo(d.x2, d.y2);
-    ctx.strokeStyle = d.color;
-    ctx.lineWidth = d.width;
-    ctx.lineCap = "round";
-    ctx.stroke();
-  });
-
-  // Icons
-  icons.forEach(i => {
-    ctx.font = `${24/scale}px Arial`;
-    ctx.fillStyle = "#000";
-    ctx.fillText(i.icon, i.x, i.y);
-  });
-
-  // Fahrzeuge
-  vehicles.forEach(v => drawVehicle(v));
-
-  // Vorschau
-  if (draggingVehiclePreview) {
-    drawVehicle({
-      text: draggingVehiclePreview,
-      type: null,
-      x: (draggingVehiclePreviewX || 0),
-      y: (draggingVehiclePreviewY || 0)
-    });
-  }
-}
-
-
-//
-// Zeichnen: Fahrzeuge
-//
-function drawVehicle(v) {
-  const paddingX = 6/scale, paddingY = 4/scale;
-  ctx.font = `${20/scale}px Arial`;
-
-  const tm = ctx.measureText(v.text);
-  const w = tm.width, h = 20/scale;
-  const fillColor = vehicleColors[v.type] || "#fffae6";
-
-  ctx.fillStyle = fillColor;
-  ctx.fillRect(v.x - paddingX, v.y - h, w + paddingX*2, h + paddingY*2);
-
-  ctx.strokeStyle = "#333";
-  ctx.lineWidth = 2/scale;
-  ctx.strokeRect(v.x - paddingX, v.y - h, w + paddingX*2, h + paddingY*2);
-
-  ctx.fillStyle = "#000";
-  ctx.fillText(v.text, v.x, v.y + paddingY);
-}
-
-
-//
-// UI-Funktionen
-//
-function selectIcon(icon) { currentIcon = icon; }
-function selectVehicle(text) { currentVehicle = text; }
-function clearCanvas() {
-  drawings = []; icons = []; vehicles = [];
-  scale = 1; originX = 0; originY = 0;
-  redraw();
-}
-
-
-//
-// Toolbar: Farben & Strichstärken
-//
+const toolbar = document.querySelector(".toolbar");
 const colors = ["black","white","red","green","blue","orange"];
 const widths = [1,2,4,6,8,12];
-const toolbar = document.querySelector(".toolbar");
 
-// Farbpalette
 const colorPalette = document.createElement("div");
-colorPalette.style.display="flex";
-colorPalette.style.gap="6px";
+colorPalette.style.display="flex"; colorPalette.style.gap="6px";
 toolbar.appendChild(colorPalette);
 
 colors.forEach(c => {
@@ -382,10 +323,8 @@ colors.forEach(c => {
   colorPalette.appendChild(b);
 });
 
-// Breitenpalette
 const widthPalette = document.createElement("div");
-widthPalette.style.display="flex";
-widthPalette.style.gap="6px";
+widthPalette.style.display="flex"; widthPalette.style.gap="6px";
 toolbar.appendChild(widthPalette);
 
 widths.forEach(w => {
@@ -401,9 +340,10 @@ widths.forEach(w => {
 
 
 //
-// Toolbar: Buttons & Drag
+// === Toolbar: Buttons & Drag ===
 //
 document.getElementById("clearCanvas").addEventListener("click", clearCanvas);
+
 document.querySelectorAll(".icon-btn").forEach(btn =>
   btn.addEventListener("click", () => selectIcon(btn.dataset.icon))
 );
@@ -411,34 +351,23 @@ document.querySelectorAll(".icon-btn").forEach(btn =>
 document.querySelectorAll(".vehicle").forEach(v => {
   v.setAttribute("draggable", true);
   v.addEventListener("dragstart", e => {
-    draggingVehiclePreview = e.target.textContent;
-    e.dataTransfer.setData("text/plain", draggingVehiclePreview);
-    e.dataTransfer.setData("type", e.target.classList[1]);
+    const imgEl = v.querySelector("img");
+    e.dataTransfer.setData("imgSrc", imgEl.getAttribute("src"));
+    e.dataTransfer.setData("type", v.classList[1]);
   });
 });
 
 
 //
-// Layer-Checkbox Events
+// === Layer-Checkbox Events ===
 //
-document.getElementById("layer-pda").addEventListener("change", e => {
-  showPDA = e.target.checked;
-  redraw();
-});
-
-document.getElementById("layer-hydrants").addEventListener("change", e => {
-  showHydrants = e.target.checked;
-  redraw();
-});
-
-document.getElementById("layer-brs").addEventListener("change", e => {
-  showBrs = e.target.checked;
-  redraw();
-});
+document.getElementById("layer-pda").addEventListener("change", e => { showPDA = e.target.checked; redraw(); });
+document.getElementById("layer-hydrants").addEventListener("change", e => { showHydrants = e.target.checked; redraw(); });
+document.getElementById("layer-brs").addEventListener("change", e => { showBrs = e.target.checked; redraw(); });
 
 
 //
-// Modus-Handling
+// === Modus-Handling ===
 //
 function toggleMode(newMode) {
   mode = newMode;
@@ -446,30 +375,49 @@ function toggleMode(newMode) {
     btn.style.background = (btn.dataset.mode === mode) ? "#ccc" : "white";
   });
 }
-toggleMode("move"); // Start im Move-Modus
+toggleMode("move");
 
-document.querySelectorAll(".mode-btn").forEach(btn => {
-  btn.addEventListener("click", () => toggleMode(btn.dataset.mode));
-});
+document.querySelectorAll(".mode-btn").forEach(btn =>
+  btn.addEventListener("click", () => toggleMode(btn.dataset.mode))
+);
+
 
 //
-// Weiteren Code
+// === UI Funktionen ===
 //
-
+function selectIcon(icon) { currentIcon = icon; }
+function selectVehicle(imgSrc) { currentVehicle = imgSrc; }
+function clearCanvas() {
+  drawings = []; icons = []; vehicles = []; polygons = [];
+  scale = 1; originX = 0; originY = 0;
+  redraw();
+}
 function clearFields() {
-  // alle Input-Felder leeren
-  document.querySelectorAll("input[type='text']").forEach(input => input.value = "");
-  // alle Textareas leeren
-  document.querySelectorAll("textarea").forEach(textarea => textarea.value = "");
+  document.querySelectorAll("input[type='text']").forEach(i => i.value = "");
+  document.querySelectorAll("textarea").forEach(t => t.value = "");
 }
 
+//
+// === Polygon-Modus Trigger ===
+//
+document.querySelectorAll(".gebiet.taktik").forEach(btn => {
+  btn.addEventListener("click", () => {
+    const color = btn.dataset.color || "rgba(255,0,0,0.4)"; // fallback rot
+    toggleMode("polygon");
+    currentPolygon = { points: [], color };
+  });
+});
+
+
+//
+// === PDF Export ===
+//
 document.getElementById("downloadPDF").addEventListener("click", () => {
   const element = document.body;
   const drawingCanvas = document.getElementById("drawingCanvas");
 
   html2canvas(element, {
-    scale: 2,
-    useCORS: true,
+    scale: 2, useCORS: true,
     ignoreElements: el => el.id === "drawingCanvas"
   }).then(pageCanvas => {
     const pageImgData = pageCanvas.toDataURL("image/png");
@@ -481,14 +429,12 @@ document.getElementById("downloadPDF").addEventListener("click", () => {
     const pageWidth = pdf.internal.pageSize.getWidth();
     const pageHeight = pdf.internal.pageSize.getHeight();
 
-    // Seite einfügen
     const imgWidth = pageWidth;
     const imgHeight = (pageCanvas.height * imgWidth) / pageCanvas.width;
     pdf.addImage(pageImgData, "PNG", 0, 0, imgWidth, imgHeight);
 
-    // Canvas zentrieren
     const canvasAspect = drawingCanvas.width / drawingCanvas.height;
-    let canvasWidthMM = pageWidth * 0.9; // 90% der Seitenbreite
+    let canvasWidthMM = pageWidth * 0.9;
     let canvasHeightMM = canvasWidthMM / canvasAspect;
 
     if (canvasHeightMM > pageHeight * 0.9) {
@@ -500,7 +446,6 @@ document.getElementById("downloadPDF").addEventListener("click", () => {
     const y = (pageHeight - canvasHeightMM) / 2;
 
     pdf.addImage(canvasImgData, "PNG", x, y, canvasWidthMM, canvasHeightMM);
-
     pdf.save("einsatzdokumentation.pdf");
   });
 });

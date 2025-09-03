@@ -311,11 +311,26 @@ input {
 
 /* Toolbar oben links */
 .toolbar {
-  background: rgba(255,255,255,0.9);
-  border: 1px solid #333;
-  padding: 10px;
-  border-radius: 6px;
-  z-index: 10;
+  padding: 12px;
+  margin-bottom: 10px;
+  gap: 6px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+
+  background: darkorange;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+  cursor: grab;
+  transition: all 0.25s ease;
+}
+
+.toolbar:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
 .toolbar button {
@@ -323,18 +338,116 @@ input {
   cursor: pointer;
 }
 
+.mode-btn {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  background: darkorange;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.mode-btn:hover {
+  background: #ff9933;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.mode-btn:active {
+  transform: scale(0.96);
+}
+
 /* Layer-Auswahl oben rechts */
 .layer-menu {
-  background: rgba(255,255,255,0.9);
-  border: 1px solid #333;
-  padding: 10px;
-  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 10px;
+  gap: 6px;
+
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+
+  background: darkorange;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
+  cursor: grab;
+  transition: all 0.25s ease;
+}
+
+.layer-menu:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
 .layer-menu label {
-  display: inline-flex;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+
+  padding: 8px 10px;
+  margin: 5px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #222;
+  background: darkorange;
+  border-radius: 10px;
+  border: 1px solid #e0e0e0;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+
   cursor: pointer;
-  margin: 4px 0;
+  transition: all 0.25s ease;
+}
+
+.layer-menu label:hover {
+  background: #ff9933;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.layer-menu input[type="checkbox"] {
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.layer-menu input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e0e0e0;
+  border-radius: 4px;
+  background: #fff;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.25s ease;
+}
+
+.layer-menu input[type="checkbox"]:hover {
+  border-color: rgb(204, 204, 204);
+  box-shadow: 0 0 5px rgba(255, 140, 0, 0.4);
+}
+
+.layer-menu input[type="checkbox"]:checked {
+  background: rgb(204, 204, 204);
+  border-color: rgb(204, 204, 204);
+}
+
+.layer-menu input[type="checkbox"]:checked::after {
+  content: "✔";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 14px;
+  color: white;
+  font-weight: bold;
 }
 
 /* ==========================================================================
@@ -399,7 +512,7 @@ input {
   font-weight: 500;
   color: #222;
 
-  background: #fff;
+  background: yellow;
   border-radius: 10px;
   border: 1px solid #e0e0e0;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
@@ -713,3 +826,225 @@ h4 {
 }
 
 
+.tab-container {
+
+  margin: 20px auto;
+  background-color: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+.tabs {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.tabs button {
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  font-weight: bold;
+}
+.tabs button.active {
+  background-color: darkorange;
+  color: white;
+}
+.tab-content {
+  display: none;
+}
+.tab-content.active {
+  display: block;
+}
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+th, td {
+  border: 1px solid #ccc;
+  padding: 8px;
+  text-align: left;
+}
+th.main-header-tabellen {
+  background-color: darkorange;
+  color: white;
+  text-align: center;
+}
+.dropdown-header {
+  cursor: pointer;
+  background-color: #f0f0f0;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 5px;
+  font-weight: bold;
+}
+.dropdown-content {
+  display: none;
+  padding: 10px 0;
+}
+
+#add-lagemeldung {
+  padding: 6px 12px;
+  background-color: #c00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#add-lagemeldung:hover {
+  background-color: #e04343;
+}
+
+/* Tabelle etwas schöner machen */
+#lagemeldungen-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+#lagemeldungen-table th, #lagemeldungen-table td {
+  border: 1px solid #ccc;
+  padding: 6px;
+  text-align: left;
+}
+
+/* Textarea innerhalb der Tabelle auf volle Breite */
+#lagemeldungen-table textarea {
+  width: 100%;
+  height: 50px;
+}
+
+#lagemeldungen-table input[type="text"] {
+  width: 100%;
+}
+
+.wache-toggle {
+  width: 100%;
+  text-align: left;
+  padding: 10px 20px;
+  cursor: pointer;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  font-weight: bold;
+  color: black;
+  transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 3px;
+}
+
+.wache-toggle.active {
+  background-color: darkorange;
+  color: white;
+}
+
+.wache-fahrzeuge {
+  display: none; /* Standard: ausgeblendet */
+  margin-top: 5px;
+}
+
+textarea {
+  width: 95%;
+  resize: vertical;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+th, td {
+  padding: 5px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+.dropdown-header {
+  padding: 10px 20px;
+  background-color: #e0e0e0;
+  border: none;
+  border-radius: 5px 5px 0 0;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
+  margin-bottom: 3px;
+  color: black;
+}
+
+.dropdown-header.active {
+  background-color: darkorange;
+  color: white;
+}
+
+.dropdown-content {
+  display: none;
+  margin-bottom: 10px;
+}
+
+textarea {
+  width: 95%;
+  resize: vertical;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 10px;
+}
+
+th, td {
+  padding: 5px;
+  border: 1px solid #ccc;
+  text-align: left;
+}
+
+#add-lagemeldungmeldnschema {
+  padding: 6px 12px;
+  background-color: #c00;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#add-lagemeldungmeldnschema:hover {
+  background-color: #e04343;
+}
+
+/* Stil für alle Dropdowns im Lagemeldungsformular */
+#melden-schema select {
+  width: 100%;
+  padding: 6px 10px;
+  font-size: 14px;
+  border: 2px solid #ffcc00; /* gelber Rahmen */
+  border-radius: 5px;
+  background-color: #fff;
+  color: #000;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+/* Hover-Effekt */
+#melden-schema select:hover {
+  border-color: #ffdd33; /* helleres Gelb beim Hover */
+  box-shadow: 0 0 5px rgba(255, 204, 0, 0.5);
+}
+
+/* Fokus-Effekt (wenn Dropdown geöffnet oder ausgewählt) */
+#melden-schema select:focus {
+  outline: none;
+  border-color: #ffdd33;
+  box-shadow: 0 0 5px rgba(255, 204, 0, 0.7);
+}
+
+/* Option-Farben (für Dropdown-Liste) */
+#melden-schema select option {
+  padding: 5px;
+  font-size: 14px;
+  color: #000;
+  background-color: #fff;
+}

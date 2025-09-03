@@ -368,11 +368,19 @@ const widths = [1,2,3,6,8,10,12,14];
 let activeColorButton = null;
 let activeWidthButton = null;
 
+// === Farbpalette Überschrift ===
+const colorTitle = document.createElement("div");
+colorTitle.textContent = "Farben";
+colorTitle.style.fontSize = "14px";
+colorTitle.style.fontWeight = "600";
+colorTitle.style.color = "#333";
+colorTitle.style.marginTop = "10px";
+toolbar.appendChild(colorTitle);
+
 // === Farbpalette ===
 const colorPalette = document.createElement("div");
 colorPalette.style.display = "flex";
 colorPalette.style.gap = "6px";
-colorPalette.style.marginTop = "20px";
 toolbar.appendChild(colorPalette);
 
 colors.forEach(c => {
@@ -417,11 +425,18 @@ colors.forEach(c => {
   colorPalette.appendChild(b);
 });
 
+// === Breitenpalette Überschrift ===
+const widthTitle = document.createElement("div");
+widthTitle.textContent = "Strichstärken";
+widthTitle.style.fontSize = "14px";
+widthTitle.style.fontWeight = "600";
+widthTitle.style.color = "#333";
+toolbar.appendChild(widthTitle);
+
 // === Breitenpalette ===
 const widthPalette = document.createElement("div");
 widthPalette.style.display = "flex";
 widthPalette.style.gap = "6px";
-widthPalette.style.marginTop = "10px";
 toolbar.appendChild(widthPalette);
 
 widths.forEach(w => {
@@ -627,7 +642,7 @@ document.getElementById("add-lagemeldung").addEventListener("click", function() 
   const cell2 = newRow.insertCell(1);
   const cell3 = newRow.insertCell(2);
 
-  cell1.innerHTML = `<input type="text" value="${timeStr}" readonly>`;
+  cell1.innerHTML = `<input type="text" value="${timeStr} Uhr" readonly>`;
   cell2.innerHTML = `<textarea></textarea>`;
   cell3.innerHTML = `<textarea></textarea>`;
 });
@@ -659,7 +674,7 @@ function createLagemeldung(index) {
 
   const header = document.createElement('div');
   header.classList.add('dropdown-header');
-  header.textContent = `${index + 1}. Lagemeldung ▼`;
+  header.textContent = `${index + 1}. Lagemeldung an die Leitstelle ▼`;
 
   const content = document.createElement('div');
   content.classList.add('dropdown-content');
@@ -675,7 +690,7 @@ function createLagemeldung(index) {
 
   content.innerHTML = `
     <table>
-      <tr><th>Uhrzeit</th><td><input type="text" value="${currentTime}"></td></tr>
+      <tr><th>Uhrzeit</th><td><input type="text" value="${currentTime} Uhr"></td></tr>
       <tr><th>Meldendes Fahrzeug</th><td>
         <select>
           <option value="">Bitte auswählen</option>
@@ -706,3 +721,7 @@ document.getElementById('add-lagemeldungmeldnschema').addEventListener('click', 
   const index = container.querySelectorAll('.dropdown').length;
   createLagemeldung(index);
 });
+
+const heute = new Date();
+const format = heute.toLocaleDateString("de-DE");
+document.getElementById("datum").value = format;

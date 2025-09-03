@@ -128,7 +128,7 @@
 
         <h3 style="border-top: 2px solid #c00; border-left: 2px solid #c00; border-right: 2px solid #c00;">— Abteilung 4 —</h3>
         <div class="vehicle feuerwehr" draggable="true">
-          <img src="img/424.svg" alt="ELW1"><span>4/24 - TLF2000</span>
+          <img src="img/424.svg" alt="ELW1"><span>4/24 - TLF4000</span>
         </div>
         <div class="vehicle feuerwehr" draggable="true">
           <img src="img/494.svg" alt="StLF"><span>4/94 - GW-Mess</span>
@@ -236,7 +236,10 @@
         </div>
 
         <table>
-          <tr><th>Datum</th><td><input type="text"></td></tr>
+          <tr>
+            <th>Datum</th>
+            <td><input type="text" id="datum"></td>
+          </tr>
           <tr><th>Einsatznummer</th><td><input type="text"></td></tr>
           <tr><th>Einsatzstichwort</th><td><input type="text"></td></tr>
           <tr><th>Einsatzstelle</th><td><input type="text"></td></tr>
@@ -247,7 +250,7 @@
         <div class="einsatzlagemeldungen">
           <table id="lagemeldungen-table">
             <tr>
-              <th class="main-header-tabellen" colspan="2">Lagemeldungen</th>
+              <th class="main-header-tabellen" colspan="2">Lagemeldungen Einsatzstelle (Intern)</th>
               <th class="main-header-tabellen">
                 <div style="display: flex; align-items: center; gap: 10px;">
                   <button id="add-lagemeldung">Lagemeldung hinzufügen</button>
@@ -257,7 +260,7 @@
             </tr>
             <tr>
               <th style="width: 10%;">Uhrzeit</th>
-              <th style="width: 45%;">Lagemeldung (EL / ZF)</th>
+              <th style="width: 45%;">Lagemeldung (Intern)</th>
               <th style="width: 45%;">Bemerkung</th>
             </tr>
           </table>
@@ -389,7 +392,7 @@
           <div class="main-header__logo">
             <img src="https://primary.jwwb.nl/public/p/s/h/temp-bolaxpwvnfuxqrvhisdc/fwfs-high.png" alt="Feuerstadt Logo" width="150">
           </div>
-          <div class="main-header__title">Lagemeldungen gemäß MELDEN-Schema</div>
+          <div class="main-header__title">Lagemeldungen gemäß MELDEN-Schema an die Leistelle</div>
         </div>
 
         <div id="lagen-container">
